@@ -120,10 +120,10 @@ Bằng chứng v1: kiểm tra dữ liệu 12 tình huống, auth và management 
 - [x] Build Web/BE đạt; 8 kiểm thử phiên Web đạt; auth:verify và management:verify với PostgreSQL local đạt.
 - [x] Trình duyệt local đăng nhập OWNER, đọc nhân sự/địa điểm từ BE, lưu địa điểm và đăng xuất thành công; MANAGER chỉ có nút sửa nhân viên thường, không có nút thêm/sửa chi nhánh; EMPLOYEE bị chặn khỏi giao diện quản trị. Đăng xuất trở về trang đăng nhập.
 - [ ] Nghiệm thu tài khoản có nhiều công ty, các kích thước màn hình và thiết bị LAN khác.
-- [ ] Deploy public: cần BE HTTPS và cấu hình VITE_API_BASE_URL/CORS; chưa đẩy code lượt này lên GitHub/Vercel.
+- [ ] Deploy public: cần BE HTTPS và cấu hình VITE_API_BASE_URL/CORS; code đã ở GitHub, chưa deploy BE public hoặc Vercel.
 - [ ] Admin toàn hệ thống theo yêu cầu quản lý tài khoản/dữ liệu: chưa triển khai. BE hiện chỉ có OWNER/MANAGER/EMPLOYEE; cần chốt quyền và phạm vi dữ liệu riêng trước khi xây, sau ưu tiên nhân sự/chấm công.
 
-Hướng dẫn local và deploy: [WebAdmin/README.md](https://github.com/Vuducdat1997/TimeInWebAdmin/blob/main/README.md). Lịch làm, bảng công, phê duyệt và checklist chưa có trên Web; không tính vào phần quản lý nhân sự đã triển khai.
+Hướng dẫn local và deploy: [WebAdmin/README.md](https://github.com/Vuducdat1997/WebAdmin/blob/main/README.md). Lịch làm, bảng công, phê duyệt và checklist chưa có trên Web; không tính vào phần quản lý nhân sự đã triển khai.
 
 ## 4A. Tách giao diện theo tài khoản — hoàn thành local
 
@@ -228,6 +228,7 @@ Trong giai đoạn local này chưa triển khai deploy BE public/phát hành st
 
 | Ngày | Thay đổi | Kiểm tra / bước tiếp theo |
 | --- | --- | --- |
+| 2026-09-17 | Tách mã nguồn thành 4 repo: `TimeInApp`, `TimeInBE`, `TimeInDocs`, `WebAdmin`; chuyển `PLAN.md` và `README.md` vào `docs/`, đổi link chéo sang URL đầy đủ | Đã kiểm tra không đẩy `.env`, `node_modules` hay thư mục build; repo gốc rỗng đã xoá. Tiếp theo phần 5 |
 | 2026-09-17 | Hoàn thành 4A: hai shell Flutter, chọn/nhớ công ty theo tài khoản, xác minh lại quyền và tái sử dụng màn quản lý | Analyze, 19 widget tests và integration ba vai trò + CRUD quản lý trên iOS Simulator đạt. Tiếp theo phần 5 |
 | 2026-09-16 | Hoàn thiện chức năng chính Web nhân sự/chi nhánh/địa điểm/cài đặt; sửa build, kết nối BE và phiên đăng nhập; đồng bộ lại phạm vi và thứ tự plan | Web/BE build đạt, 8 test phiên Web và kiểm thử auth/management BE đạt; kiểm tra UI ba vai trò. Còn nghiệm thu nhiều công ty, responsive và thiết bị LAN khác |
 | 2026-09-15 | Chốt cấu trúc Công ty/cửa hàng → Chi nhánh → Nhân viên; thiết kế hai giao diện, thêm 4A và 8A | Chỉ cập nhật tài liệu; bắt đầu code phần 4A khi tiếp tục triển khai |

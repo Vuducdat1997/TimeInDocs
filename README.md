@@ -4,7 +4,7 @@ Bốn kho mã nguồn:
 
 - [TimeInApp](https://github.com/Vuducdat1997/TimeInApp) — `App/`: Flutter iOS/Android.
 - [TimeInBE](https://github.com/Vuducdat1997/TimeInBE) — `BE/`: NestJS + TypeScript, Prisma, PostgreSQL 17 qua Docker Compose.
-- [TimeInWebAdmin](https://github.com/Vuducdat1997/TimeInWebAdmin) — `WebAdmin/`: React + TypeScript + Vite.
+- [WebAdmin](https://github.com/Vuducdat1997/WebAdmin) — `WebAdmin/`: React + TypeScript + Vite.
 - [TimeInDocs](https://github.com/Vuducdat1997/TimeInDocs) — tài liệu: `README.md` này, `PLAN.md`, `PRODUCT.md`, `PLAN-v1-history.md`.
 
 Đã có schema, seed, API đăng nhập và kiểm tra phân quyền; nghiệp vụ chấm công ở các bước sau.
