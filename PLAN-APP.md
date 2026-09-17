@@ -57,10 +57,11 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [x] **APP-1.3** Cấu hình API URL cho iOS Simulator (`127.0.0.1`), Android Emulator (`10.0.2.2`) và điện thoại thật (`--dart-define=API_BASE_URL`).
 - [x] **APP-1.4** Theme dùng chung; màu `ink`, `blue`, `muted` định nghĩa một nơi.
 - [x] **APP-1.5** Đã lưu bộ thiết kế màn nhân viên vào `docs/design/trang-chu/` (`DESIGN.md`, `code.html`, `screen.png`).
+- [x] **APP-1.6** Logo thương hiệu: logo gốc ở `assets/branding/logo.png`; `scripts/make-icons.sh` làm phẳng nền trong suốt và sinh 19 icon iOS + 5 icon Android; hiển thị ở màn đăng nhập. Chạy lại script khi logo đổi, không cần thêm dependency.
 
-**Đầu vào:** `PLAN-BE.md` BE-1.5 (`/health`) và BE-1.4 (biến môi trường); ảnh thiết kế do chủ dự án cung cấp.
-**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu), `analysis_options.yaml`, `lib/theme/app_colors.dart` (bảng màu theo thiết kế mới), `docs/design/trang-chu/`.
-**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật; thiết kế mở được từ link trong plan.
+**Đầu vào:** `PLAN-BE.md` BE-1.5 (`/health`) và BE-1.4 (biến môi trường); ảnh thiết kế và logo do chủ dự án cung cấp.
+**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu cũ), `lib/theme/app_colors.dart` (bảng màu theo thiết kế), `assets/branding/`, `scripts/make-icons.sh`, `docs/design/trang-chu/`.
+**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật; thiết kế mở được từ link trong plan; icon hiển thị đúng trên màn hình chính của máy ảo.
 
 ## APP-3 — Đăng nhập và phiên
 
@@ -202,3 +203,5 @@ Trong lúc còn dữ liệu mẫu, màn hình hiển thị nhãn **"DỮ LIỆU 
 **Chưa làm ở màn này:** nút chuông thông báo mới chỉ hiển thị, chưa mở được (chờ BE-9.6); chưa có deep link; đồng hồ trên màn cập nhật theo lần vẽ chứ chưa tự nhích mỗi phút (tránh `Timer.periodic` làm widget test không kết thúc).
 
 **Bằng chứng:** `flutter analyze` sạch lỗi; 22 widget test đạt, gồm test mới "Home shows demo notice and checklist counter follows ticks" và test cũ "All five tabs stay usable at 320px and large text" vẫn đạt sau khi đổi thanh tab.
+
+**Kiểm tra trên máy ảo 2026-09-17:** app tự khôi phục phiên từ Keychain, vào thẳng Trang Chủ sau khi tắt và mở lại, không hỏi lại mật khẩu (đúng như thiết kế lưu phiên). Ba lỗi lệch thiết kế đã phát hiện qua ảnh chụp và sửa xong: nhãn trạng thái ca bị kéo giãn hết chiều ngang (thiếu `mainAxisSize.min`), tên quản lý bị cắt cụt (`Spacer` tranh chỗ với `Flexible`), và thanh xanh trên thẻ ca hiển thị cả ở ca đã kết thúc (giờ chỉ dành cho ca đang chạy). Icon logo đã lên màn hình chính của máy ảo.

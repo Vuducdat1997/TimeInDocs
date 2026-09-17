@@ -89,6 +89,7 @@ Thứ tự công việc tiếp theo:
 
 | Ngày | Thay đổi | Kiểm tra / bước tiếp theo |
 | --- | --- | --- |
+| 2026-09-17 | Thêm logo thương hiệu: sinh 19 icon iOS + 5 Android bằng script Swift + `sips` (không thêm dependency), hiển thị logo ở màn đăng nhập. Sửa ba lỗi lệch thiết kế ở Trang Chủ | `flutter analyze` sạch, 22 test đạt. Icon lên màn hình chính; nhãn ca, tên quản lý và thanh xanh đã đúng thiết kế. Xác nhận lưu phiên đăng nhập hoạt động |
 | 2026-09-17 | Dựng màn **Trang Chủ** nhân viên theo thiết kế: danh tính, băng ca, công việc hôm nay, dải GPS; đổi thanh tab nhân viên sang Trang Chủ · Lịch · Chụp ảnh · Checklist · Cá Nhân. Lưu thiết kế vào `docs/design/trang-chu/` | `flutter analyze` sạch, 22 widget test đạt. Danh tính lấy API thật; ca/công việc/GPS còn là dữ liệu mẫu có nhãn, chờ BE-5/BE-8A/BE-6. Chưa chụp được màn trên máy ảo vì cần đăng nhập |
 | 2026-09-17 | Bổ sung feature từ thiết kế 8 màn hình nhân viên: lịch tháng, chấm công bằng khuôn mặt, màn kết quả chấm công, checklist theo ca, form đơn xin phép, đổi ca, trang chủ có thông báo, tab Cá Nhân có thống kê tháng, bảng lương | Ba nội dung vượt phạm vi (khuôn mặt, bảng lương, đổi ca) được ghi kèm nhãn **cần chốt phạm vi**; đã cập nhật bảng Hợp đồng liên phần và mục Quyết định còn mở |
 | 2026-09-17 | Tách kế hoạch thành trang điều hướng và ba plan riêng `PLAN-BE.md`, `PLAN-APP.md`, `PLAN-WEB.md`; mỗi feature có Đầu vào / Đầu ra / Nghiệm thu | Bổ sung `AGENTS.md` cho App và BE. Tiếp theo phần 5 |
