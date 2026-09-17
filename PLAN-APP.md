@@ -4,6 +4,25 @@ Kế hoạch chi tiết cho repo [`TimeInApp`](https://github.com/Vuducdat1997/T
 
 Tài liệu này **chỉ quản lý phần App**. Tài liệu này không quyết định nghiệp vụ hay quyền — mọi quyền do BE cấp; App chỉ khai báo hợp đồng API mình cần.
 
+## Thiết kế tham chiếu
+
+Bộ 8 màn hình nhân viên do chủ dự án cung cấp ngày 2026-09-17:
+
+| # | Màn hình | Feature |
+| --- | --- | --- |
+| 1 | Trang Chủ | APP-9.5, APP-9.6 |
+| 2 | Lịch Làm Việc | APP-5.1 → APP-5.6 |
+| 3 | Chấm Công (khuôn mặt) | APP-6.1 → APP-6.9 |
+| 4 | Checklist Công Việc | APP-8A.1, APP-8A.5, APP-8A.6 |
+| 5 | Cá Nhân | APP-9.7, APP-9.8, APP-9.9 |
+| 6 | Đơn Xin Phép & Đổi Ca | APP-8.4 → APP-8.7 |
+| 7 | Chấm Công Thành Công | APP-6.7 |
+| 8 | Chấm Công Thất Bại | APP-6.7 |
+
+Thiết kế này **rộng hơn plan gốc**: có ba nội dung chưa từng nằm trong phạm vi dự án — chấm công bằng khuôn mặt, đổi ca và bảng lương/thu nhập — cộng với thay đổi thanh tab của nhân viên. Các feature đó đã được ghi vào plan và **đánh dấu "cần chốt phạm vi"**; không feature nào trong số đó được coi là đã chốt cho tới khi có quyết định ở `PLAN.md`.
+
+Ảnh thiết kế chưa được lưu trong repo — xem nhiệm vụ APP-1.5.
+
 ## Trạng thái: `[x]` xong và có bằng chứng chạy thật · `[ ]` còn việc
 
 ## Yêu cầu đầu vào của phần App
@@ -37,10 +56,11 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [x] **APP-1.2** Màn hình hiển thị trạng thái API/database, có trạng thái lỗi và thử lại.
 - [x] **APP-1.3** Cấu hình API URL cho iOS Simulator (`127.0.0.1`), Android Emulator (`10.0.2.2`) và điện thoại thật (`--dart-define=API_BASE_URL`).
 - [x] **APP-1.4** Theme dùng chung; màu `ink`, `blue`, `muted` định nghĩa một nơi.
+- [ ] **APP-1.5** Lưu bộ ảnh thiết kế 8 màn hình nhân viên vào repo (ví dụ `docs/design/`) và trỏ từ plan này tới đó, để thiết kế không chỉ nằm ngoài workspace.
 
-**Đầu vào:** `PLAN-BE.md` BE-1.5 (`/health`) và BE-1.4 (biến môi trường).
-**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu), `analysis_options.yaml`.
-**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật.
+**Đầu vào:** `PLAN-BE.md` BE-1.5 (`/health`) và BE-1.4 (biến môi trường); ảnh thiết kế do chủ dự án cung cấp.
+**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu), `analysis_options.yaml`, thư mục thiết kế.
+**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật; ảnh thiết kế mở được từ link trong plan.
 
 ## APP-3 — Đăng nhập và phiên
 
@@ -78,10 +98,11 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [x] **APP-4A.7** Module chưa có API hiển thị trạng thái chưa sẵn sàng, không dùng số liệu giả.
 - [x] **APP-4A.8** Chống race bằng biến `generation` cho mọi thao tác bất đồng bộ.
 - [ ] **APP-4A.9** Đăng ký deep link tới module quản lý (chưa làm; hiện kiểm tra vai trò bằng callback).
+- [ ] **APP-4A.10** Cập nhật thanh điều hướng nhân viên theo thiết kế 2026-09-17: **Trang Chủ · Lịch · Chấm Công (nút giữa) · Checklist · Cá Nhân**; bỏ tab **Yêu cầu** và mở đơn từ từ Trang Chủ/Cá Nhân. **Cần chốt phạm vi** trước khi đổi, vì thiết kế này thay đổi mục APP-4A.3 đã hoàn thành.
 
-**Đầu vào:** `PLAN-BE.md` BE-4A.1, BE-4A.2; ma trận quyền trong `docs/PRODUCT.md`.
+**Đầu vào:** `PLAN-BE.md` BE-4A.1, BE-4A.2; ma trận quyền trong `docs/PRODUCT.md`; quyết định ở `PLAN.md` về thanh tab mới.
 **Đầu ra:** `lib/workspace/session_gate.dart`, `lib/workspace/workspace_shell.dart`, `test/workspace_test.dart`, `integration_test/workspace_flow_test.dart`.
-**Nghiệm thu:** ba vai trò vào đúng shell; một/nhiều/không có membership xử lý đúng; dữ liệu công ty cũ bị xóa khi đổi đơn vị; route quản lý không mở được từ callback của nhân viên; 5 tab dùng được ở màn 320px và chữ lớn. **Bằng chứng 2026-09-17:** `flutter analyze` sạch, 21 widget test đạt, `workspace_flow_test.dart` và `management_flow_test.dart` đạt trên iPhone 17 Pro/iOS 26.
+**Nghiệm thu:** ba vai trò vào đúng shell; một/nhiều/không có membership xử lý đúng; dữ liệu công ty cũ bị xóa khi đổi đơn vị; route quản lý không mở được từ callback của nhân viên; 5 tab dùng được ở màn 320px và chữ lớn. Nếu đổi thanh tab: đơn từ vẫn tới được từ ít nhất một lối vào, và test workspace hiện có được cập nhật. **Bằng chứng 2026-09-17:** `flutter analyze` sạch, 21 widget test đạt, `workspace_flow_test.dart` và `management_flow_test.dart` đạt trên iPhone 17 Pro/iOS 26.
 
 ## APP-5 — Lịch làm
 
@@ -89,10 +110,12 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-5.2** Quản lý: lịch tuần lọc theo chi nhánh và nhân viên.
 - [ ] **APP-5.3** Quản lý: tạo/sửa mẫu ca, phân ca, đổi/hủy ca trong phạm vi quyền.
 - [ ] **APP-5.4** Xử lý trạng thái chưa phân ca, lỗi mạng và lỗi quyền trên màn lịch.
+- [ ] **APP-5.5** Lịch tháng: chấm ngày có ca, ngày nghỉ và ngày chưa xếp; có chú thích màu; tổng giờ theo ngày đã chọn.
+- [ ] **APP-5.6** Chọn một ngày trong tháng để xem danh sách ca của ngày đó; lối vào "Xem lịch tháng" từ tab Lịch.
 
 **Đầu vào:** `PLAN-BE.md` BE-5.1 → BE-5.5; quyết định về sửa/hủy ca đã có công (mục còn mở của `PLAN.md`).
-**Đầu ra:** tab **Lịch làm** của cả hai shell; widget test cho ca qua đêm và màn rỗng.
-**Nghiệm thu:** nhân viên thấy đúng ca của mình, đúng giờ và ngày; quản lý thấy đúng phạm vi chi nhánh; ca không hợp lệ hiển thị lỗi rõ ràng từ BE; lịch tuần đổi tuần không cần tải lại toàn app.
+**Đầu ra:** tab **Lịch** của cả hai shell, gồm lịch tuần và lịch tháng; widget test cho ca qua đêm, màn rỗng và chú thích lịch.
+**Nghiệm thu:** nhân viên thấy đúng ca của mình, đúng giờ và ngày; quản lý thấy đúng phạm vi chi nhánh; ca không hợp lệ hiển thị lỗi rõ ràng từ BE; lịch tuần đổi tuần không cần tải lại toàn app; lịch tháng đánh dấu đúng ba trạng thái ngày và khớp với lịch tuần cùng kỳ.
 
 ## APP-6 — Chấm công GPS
 
@@ -101,10 +124,14 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-6.3** Xử lý từ chối quyền, ngoài phạm vi, GPS kém, mất mạng và lỗi server; chỉ báo thành công khi server xác nhận.
 - [ ] **APP-6.4** Quản lý: xem trạng thái vào/ra của nhân viên theo phạm vi từ dữ liệu thật.
 - [ ] **APP-6.5** Chống bấm lặp: khóa nút trong lúc chờ và dùng idempotency key khi retry.
+- [ ] **APP-6.6** Xác thực khuôn mặt trong màn chấm công: camera trước, khung hướng dẫn khuôn mặt, hiển thị trạng thái "đã xác thực" và "vị trí hợp lệ" trước khi cho gửi. **Cần chốt phạm vi.**
+- [ ] **APP-6.7** Màn hình kết quả sau chấm công: thành công (kèm ca và giờ đã ghi) và thất bại (kèm lý do GPS/khuôn mặt, nút **Thử lại** và **Đã hiểu**).
+- [ ] **APP-6.8** Đăng ký và cập nhật khuôn mặt từ tab Cá Nhân, kèm hướng dẫn chụp và xác nhận trước khi lưu. **Cần chốt phạm vi.**
+- [ ] **APP-6.9** Nhắc nhở trước giờ vào ca; phụ thuộc quyết định về phạm vi thông báo trong `PLAN.md`.
 
-**Đầu vào:** `PLAN-BE.md` BE-6.1 → BE-6.4; quy tắc cửa sổ vào/ra và GPS trong `BE/docs/DATA-RULES.md` phải chốt trước.
-**Đầu ra:** trang chủ **Chấm công** thật (thay `UnavailableCard`); quyền vị trí trong `Info.plist`; widget test cho các nhánh lỗi.
-**Nghiệm thu:** vào/ra end-to-end trên Simulator với vị trí kiểm soát; không sinh bản ghi trùng khi bấm lặp hoặc retry; mọi nhánh lỗi có thông báo hướng dẫn cụ thể; GPS thiết bị thật ghi riêng là chưa xác minh.
+**Đầu vào:** `PLAN-BE.md` BE-6.1 → BE-6.6; quy tắc cửa sổ vào/ra và GPS trong `BE/docs/DATA-RULES.md` phải chốt trước; quyết định về phạm vi nhận diện khuôn mặt và quyền camera trong `Info.plist`.
+**Đầu ra:** trang **Chấm Công** thật (thay `UnavailableCard`) gồm camera, trạng thái xác thực, nút chấm công; hai màn kết quả; màn đăng ký khuôn mặt; quyền camera và vị trí trong `Info.plist`; widget test cho các nhánh lỗi.
+**Nghiệm thu:** vào/ra end-to-end trên Simulator với vị trí kiểm soát; không sinh bản ghi trùng khi bấm lặp hoặc retry; mọi nhánh lỗi có thông báo hướng dẫn cụ thể; màn kết quả chỉ báo thành công khi server đã xác nhận; từ chối quyền camera hoặc vị trí không làm app treo và vẫn có đường thoát; GPS và camera trên thiết bị thật ghi riêng là chưa xác minh.
 
 ## APP-7 — Lịch sử và bảng công
 
@@ -121,10 +148,14 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-8.1** Tab **Yêu cầu** cho nhân viên: đăng ký nghỉ, gửi sửa công, xem trạng thái và lý do từ chối.
 - [ ] **APP-8.2** Tab **Phê duyệt** cho quản lý: lọc loại/trạng thái, xem dữ liệu gốc và đề xuất, xác nhận trước khi duyệt.
 - [ ] **APP-8.3** Không hiển thị nút duyệt cho yêu cầu của chính mình.
+- [ ] **APP-8.4** Form **Đơn Xin Phép**: loại phép (có lương / không lương), từ ngày–đến ngày kèm giờ, số ngày nghỉ, ca nằm trong khoảng nghỉ, lý do, và người duyệt dự kiến.
+- [ ] **APP-8.5** Hiển thị quy tắc thời hạn gửi đơn (ví dụ phải gửi trước 24 giờ) ngay trên form, và chặn gửi khi vi phạm kèm lý do rõ ràng.
+- [ ] **APP-8.6** **Đổi ca**: chọn ca của mình, chọn nhân viên nhận, gửi yêu cầu và theo dõi trạng thái. **Cần chốt phạm vi.**
+- [ ] **APP-8.7** Màn **Đơn của tôi**: lọc theo loại (nghỉ / đổi ca) và trạng thái; mở từ Trang Chủ và Cá Nhân thay cho tab **Yêu cầu** đã bỏ.
 
-**Đầu vào:** `PLAN-BE.md` BE-8.1 → BE-8.4; quyết định về loại nghỉ và tác động công.
-**Đầu ra:** hai tab thay thế `UnavailablePage`; widget test cho không-tự-duyệt.
-**Nghiệm thu:** nhân viên theo dõi được yêu cầu của mình; quản lý duyệt trong phạm vi; từ chối hiển thị lý do; thao tác lặp không tạo hai lần xử lý.
+**Đầu vào:** `PLAN-BE.md` BE-8.1 → BE-8.6; quyết định về loại nghỉ, tác động công và đổi ca.
+**Đầu ra:** form đơn xin phép, màn đổi ca, màn Đơn của tôi (thay `UnavailablePage`); widget test cho không-tự-duyệt và cho chặn gửi sai thời hạn.
+**Nghiệm thu:** số ngày nghỉ tính đúng theo khoảng thời gian đã chọn; ca bị ảnh hưởng trong khoảng nghỉ hiển thị đúng; gửi đơn vi phạm thời hạn bị chặn ngay trên form chứ không chỉ bị BE từ chối; nhân viên theo dõi được yêu cầu của mình; quản lý duyệt trong phạm vi; từ chối hiển thị lý do; thao tác lặp không tạo hai lần xử lý.
 
 ## APP-8A — Checklist công việc
 
@@ -132,10 +163,12 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-8A.2** Trang chủ nhân viên hiển thị việc sắp đến hạn.
 - [ ] **APP-8A.3** Quản lý: tạo mẫu, giao việc, theo dõi tiến độ và việc quá hạn.
 - [ ] **APP-8A.4** Sau khi hoàn tất toàn bộ, không cho tự bỏ đánh dấu; yêu cầu quản lý mở lại.
+- [ ] **APP-8A.5** Checklist nhóm **theo ca trong ngày** (ví dụ Ca Sáng / Ca Chiều / Ca Tối) với tiến độ tổng, số việc đã xong, số việc còn lại và phần trăm hoàn thành.
+- [ ] **APP-8A.6** Bộ lọc theo ngày và theo ca trên màn checklist.
 
-**Đầu vào:** `PLAN-BE.md` BE-8A.1 → BE-8A.5 (chưa có schema).
-**Đầu ra:** tab **Công việc**, màn giao việc trong shell quản lý.
-**Nghiệm thu:** quản lý giao → nhân viên thực hiện → quản lý thấy tiến độ thật; hoàn thành checklist không làm thay đổi giờ công; cập nhật lặp không sinh kết quả trùng.
+**Đầu vào:** `PLAN-BE.md` BE-8A.1 → BE-8A.5 (chưa có schema); checklist phải gắn được với ca, không chỉ với ngày.
+**Đầu ra:** tab **Checklist**, màn giao việc trong shell quản lý.
+**Nghiệm thu:** quản lý giao → nhân viên thực hiện → quản lý thấy tiến độ thật; việc hiển thị đúng nhóm ca; tiến độ tổng khớp tổng số mục đã đánh dấu; hoàn thành checklist không làm thay đổi giờ công; cập nhật lặp không sinh kết quả trùng.
 
 ## APP-9 — Tổng quan và hoàn thiện
 
@@ -143,7 +176,12 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-9.2** Hoàn thiện trạng thái tải/rỗng/lỗi/mất phiên và điều hướng trên cả hai shell.
 - [ ] **APP-9.3** Nghiệm thu trên iOS Simulator; ghi riêng GPS và iPhone vật lý chưa xác minh.
 - [ ] **APP-9.4** Review lại toàn bộ: màn 320px, chữ lớn, xoay màn hình, mất mạng giữa luồng.
+- [ ] **APP-9.5** **Trang Chủ** nhân viên: lời chào theo tên, ngày giờ hiện tại, thẻ ca hiện tại kèm trạng thái (đang làm việc / chưa vào), danh sách công việc hôm nay, và tiến độ hoàn thành.
+- [ ] **APP-9.6** Chuông thông báo trên Trang Chủ: số chưa đọc, danh sách thông báo, đánh dấu đã đọc. **Cần chốt phạm vi.**
+- [ ] **APP-9.7** Tab **Cá Nhân** phần thông tin: ảnh, tên, chức danh, mã nhân viên, vai trò, trạng thái; thống kê tháng gồm số ca và tổng giờ.
+- [ ] **APP-9.8** Tab **Cá Nhân** các lối vào: đăng ký khuôn mặt, cài đặt nhắc nhở, đổi đơn vị làm việc, đổi mật khẩu, đăng xuất và số phiên bản app. *Danh sách mục cần chốt lại với chủ dự án vì ảnh thiết kế có chữ nhỏ.*
+- [ ] **APP-9.9** **Bảng lương và thu nhập** theo tháng. **Cần chốt phạm vi** — hiện nằm ngoài phạm vi dự án.
 
-**Đầu vào:** tất cả module nguồn (5, 6, 7, 8, 8A) đã có API thật.
-**Đầu ra:** báo cáo nghiệm thu theo từng shell; cập nhật `App/README.md`.
-**Nghiệm thu:** chủ tạo nhân viên → phân ca → nhân viên chấm công → gửi yêu cầu → quản lý duyệt → xem bảng công, toàn bộ trên app thật, không dùng dữ liệu giả. Android vẫn hoãn.
+**Đầu vào:** tất cả module nguồn (5, 6, 7, 8, 8A) đã có API thật; `PLAN-BE.md` BE-7.4 (thống kê cá nhân), BE-9.6 (thông báo), BE-9.7 (bảng lương), BE-3.7 (đổi mật khẩu), BE-4.7 (chức danh).
+**Đầu ra:** Trang Chủ thật thay `UnavailableCard` hiện tại; tab Cá Nhân đầy đủ; báo cáo nghiệm thu theo từng shell; cập nhật `App/README.md`.
+**Nghiệm thu:** chủ tạo nhân viên → phân ca → nhân viên chấm công → gửi yêu cầu → quản lý duyệt → xem bảng công, toàn bộ trên app thật, không dùng dữ liệu giả; Trang Chủ không hiển thị số liệu nào khi module nguồn chưa có API; thống kê tháng khớp dữ liệu bảng công cùng kỳ; mọi lối vào trong Cá Nhân đều có tác dụng thật, không có nút chết. Android vẫn hoãn.

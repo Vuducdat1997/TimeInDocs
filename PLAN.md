@@ -60,10 +60,15 @@ App và Web không tự quyết định nghiệp vụ hay quyền. Mọi giao ti
 | Chặn EMPLOYEE nhiều công ty | BE-4A.2 | App, Web | Đã có |
 | Mẫu ca, phân ca, lịch tuần | BE-5.1 → BE-5.5 | App, Web | Chưa có |
 | Chấm công vào/ra | BE-6.1 → BE-6.4 | App | Chưa có |
+| Mẫu khuôn mặt và xác thực khi chấm công | BE-6.5, BE-6.6 | App | Chưa có — **cần chốt phạm vi** |
 | Lịch sử và bảng công | BE-7.1 → BE-7.3 | App, Web | Chưa có |
+| Thống kê cá nhân theo tháng (số ca, số giờ) | BE-7.4 | App | Chưa có |
 | Nghỉ, sửa công và phê duyệt | BE-8.1 → BE-8.4 | App, Web | Chưa có |
+| Đổi ca giữa hai nhân viên | BE-8.5 | App, Web | Chưa có — **cần chốt phạm vi** |
 | Checklist công việc | BE-8A.2 → BE-8A.5 | App, Web | Chưa có |
 | Tổng quan, xuất CSV, chốt kỳ | BE-9.1 → BE-9.3 | App, Web | Chưa có |
+| Thông báo trong app | BE-9.6 | App | Chưa có — **cần chốt phạm vi** |
+| Bảng lương và thu nhập | BE-9.7 | App | Chưa có — **cần chốt phạm vi** |
 
 Khi một hợp đồng thay đổi, cập nhật đồng thời feature tương ứng ở cả ba plan.
 
@@ -84,6 +89,7 @@ Thứ tự công việc tiếp theo:
 
 | Ngày | Thay đổi | Kiểm tra / bước tiếp theo |
 | --- | --- | --- |
+| 2026-09-17 | Bổ sung feature từ thiết kế 8 màn hình nhân viên: lịch tháng, chấm công bằng khuôn mặt, màn kết quả chấm công, checklist theo ca, form đơn xin phép, đổi ca, trang chủ có thông báo, tab Cá Nhân có thống kê tháng, bảng lương | Ba nội dung vượt phạm vi (khuôn mặt, bảng lương, đổi ca) được ghi kèm nhãn **cần chốt phạm vi**; đã cập nhật bảng Hợp đồng liên phần và mục Quyết định còn mở |
 | 2026-09-17 | Tách kế hoạch thành trang điều hướng và ba plan riêng `PLAN-BE.md`, `PLAN-APP.md`, `PLAN-WEB.md`; mỗi feature có Đầu vào / Đầu ra / Nghiệm thu | Bổ sung `AGENTS.md` cho App và BE. Tiếp theo phần 5 |
 | 2026-09-17 | Tách mã nguồn thành 4 repo: `TimeInApp`, `TimeInBE`, `TimeInDocs`, `WebAdmin`; chuyển `PLAN.md` và `README.md` vào `docs/`, đổi link chéo sang URL đầy đủ | Đã kiểm tra không đẩy `.env`, `node_modules` hay thư mục build; repo gốc rỗng đã xoá |
 | 2026-09-17 | Hoàn thành 4A: hai shell Flutter, chọn/nhớ công ty theo tài khoản, xác minh lại quyền và tái sử dụng màn quản lý | Analyze, 21 widget test và integration ba vai trò + CRUD quản lý trên iOS Simulator đạt. Tiếp theo phần 5 |
@@ -98,6 +104,11 @@ Phải chốt trước khi bắt đầu feature tương ứng; ghi lại quyết
 
 - **Phần 5–6:** rà soát và chốt các mặc định trong `BE/docs/DATA-RULES.md` về giờ nghỉ, đi muộn, cửa sổ vào/ra và GPS.
 - **Phần 5:** quy tắc sửa/hủy ca đã có công.
+- **Phần 6 — chấm công bằng khuôn mặt (mới, từ thiết kế 2026-09-17):** có đưa vào phạm vi không; nếu có thì dùng thư viện/thuật toán nào, chạy trên thiết bị hay gửi lên server, lưu mẫu khuôn mặt ở đâu, thời hạn lưu và quyền xóa. Dữ liệu sinh trắc học cần quyết định riêng trước khi viết code.
+- **Phần 6 — thanh tab nhân viên (mới):** thiết kế đổi thành **Trang Chủ · Lịch · Chấm Công (nút giữa) · Checklist · Cá Nhân** và bỏ tab **Yêu cầu**. Cần chốt lối vào đơn từ (Trang Chủ, Cá Nhân hay cả hai) và việc đổi tab có phá vỡ APP-4A.3 hay không.
+- **Phần 8 — đổi ca (mới):** cho phép nhân viên tự thỏa thuận đổi ca với nhau hay chỉ gửi đề xuất để quản lý duyệt; ca đã chấm công có được đổi không.
+- **Phần 9 — bảng lương và thu nhập (mới):** hiện nằm ngoài phạm vi. Nếu đưa vào thì cần chốt công thức lương, quyền xem và có gắn với chốt kỳ công không.
+- **Phần 9 — thông báo trong app (mới):** nguồn thông báo (đổi ca, duyệt đơn, nhắc vào ca), có cần push qua dịch vụ ngoài hay chỉ hiển thị trong app.
 - **Phần 7:** làm tròn giờ và có quy đổi ngày công hay không.
 - **Phần 8:** loại nghỉ và tác động lên công; chủ/quản lý có cần thêm quyền làm việc cá nhân.
 - **Phần 8A:** khóa khi hoàn tất, quyền mở lại, cách đặt hạn giao việc.
@@ -105,7 +116,11 @@ Phải chốt trước khi bắt đầu feature tương ứng; ghi lại quyết
 
 ## Ngoài phạm vi hiện tại
 
-Trong giai đoạn local này chưa triển khai: deploy BE public và phát hành store, tính lương, SMS OTP, nhận diện khuôn mặt, QR động, chấp nhận công offline tự động, microservices, Redis và push qua dịch vụ ngoài. Android chưa kiểm thử. Onboarding công ty mới, mời email đã có và cấp nhiều chi nhánh cho cùng một quản lý chưa triển khai. Admin toàn hệ thống là yêu cầu còn mở, tách khỏi quyền OWNER — theo dõi ở `PLAN-WEB.md` WEB-4.11.
+Trong giai đoạn local này chưa triển khai: deploy BE public và phát hành store, tính lương, SMS OTP, nhận diện khuôn mặt, QR động, chấp nhận công offline tự động, microservices, Redis và push qua dịch vụ ngoài.
+
+**Thay đổi phạm vi đang chờ quyết định:** thiết kế màn hình nhân viên ngày 2026-09-17 có ba nội dung nằm trong danh sách trên — **chấm công bằng khuôn mặt**, **bảng lương và thu nhập**, và **đổi ca**. Các feature tương ứng đã được ghi vào plan (`BE-6.5`, `BE-6.6`, `BE-9.7`, `BE-8.5`, `APP-6.6` → `APP-6.8`, `APP-9.9`) nhưng đánh dấu *cần chốt phạm vi*. Chưa nội dung nào được coi là đã chốt; xem mục **Quyết định còn mở**.
+
+Android chưa kiểm thử. Onboarding công ty mới, mời email đã có và cấp nhiều chi nhánh cho cùng một quản lý chưa triển khai. Admin toàn hệ thống là yêu cầu còn mở, tách khỏi quyền OWNER — theo dõi ở `PLAN-WEB.md` WEB-4.11.
 
 ## Quy tắc cấp tài khoản và công ty của nhân viên — cập nhật 2026-09-17
 

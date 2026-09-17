@@ -68,6 +68,7 @@ Không viết API khi quy tắc nghiệp vụ còn mơ hồ — ghi lại quyế
 - [x] **BE-3.4** Quyền OWNER/MANAGER/EMPLOYEE theo membership, phạm vi chi nhánh.
 - [x] **BE-3.5** `/organizations/:id/access` trả role, scope và permissions.
 - [x] **BE-3.6** Chống tự nâng quyền và cách ly dữ liệu giữa hai công ty.
+- [ ] **BE-3.7** API đổi mật khẩu cho chính người dùng: yêu cầu mật khẩu hiện tại, bắt buộc mật khẩu mới từ 12 ký tự, thu hồi các phiên khác sau khi đổi.
 
 **Đầu vào:** quyết định token opaque (không JWT), giới hạn đăng nhập 15 yêu cầu/phút theo IP và email.
 **Đầu ra:** `src/auth.ts`, `scripts/setup-demo-auth.cjs`, `scripts/verify-auth.cjs`, `BE/docs/AUTH.md`.
@@ -81,6 +82,7 @@ Không viết API khi quy tắc nghiệp vụ còn mơ hồ — ghi lại quyế
 - [x] **BE-4.4** Khóa hàng `Organization` trong transaction khi ghi, kiểm tra quyền lại, ghi audit cùng transaction.
 - [x] **BE-4.5** Chặn tự đổi vai trò/vô hiệu hóa chính mình và chặn mất chủ công ty cuối cùng.
 - [ ] **BE-4.6** Rà soát lại ràng buộc nghiệp vụ khi mở phần 5: ca của nhân viên bị vô hiệu hóa phải xử lý thế nào.
+- [ ] **BE-4.7** Chức danh nhân viên (ví dụ "Nhân viên bán hàng"): bổ sung vào membership, cho OWNER/MANAGER đặt khi tạo/sửa, và trả về trong hồ sơ để tab Cá Nhân hiển thị. **Cần migration.**
 
 **Đầu vào:** `BE/docs/MANAGEMENT.md`; yêu cầu form của App và Web (trường nào bắt buộc, giới hạn ký tự).
 **Đầu ra:** endpoint `/organizations/:org`, `profile`, `branches`, `locations`, `employees`; `scripts/verify-management.cjs`; `scripts/cleanup-management-ui.cjs`.
@@ -113,16 +115,19 @@ Không viết API khi quy tắc nghiệp vụ còn mơ hồ — ghi lại quyế
 - [ ] **BE-6.2** Kiểm tra khoảng cách tới địa điểm, độ mới và độ chính xác của vị trí.
 - [ ] **BE-6.3** Chống ghi trùng khi retry hoặc request đồng thời bằng idempotency key.
 - [ ] **BE-6.4** Tính `AttendanceSession` từ sự kiện gốc; giữ null khi thiếu đầu vào.
+- [ ] **BE-6.5** Đăng ký mẫu khuôn mặt cho nhân viên; cập nhật và vô hiệu hóa mẫu cũ có audit. **Cần chốt phạm vi** — dữ liệu sinh trắc học cần phương án lưu trữ, thời hạn và quyền xóa riêng trước khi code.
+- [ ] **BE-6.6** Xác thực khuôn mặt khi vào/ra ca: so khớp với mẫu đã đăng ký, lưu kết quả kèm điểm tin cậy, chống giả mạo cơ bản. **Cần chốt phạm vi.**
 
-**Đầu vào:** quy tắc GPS trong `DATA-RULES.md` (bán kính 150 m, chính xác ≤ 100 m, vị trí không quá 60 giây) phải được rà soát và chốt lại trước khi code.
-**Đầu ra:** endpoint chấm công; `AttendanceEvent` chỉ thêm, `AttendanceSession` tính lại được.
-**Nghiệm thu:** vào/ra end-to-end không sinh bản ghi trùng; retry cùng idempotency key trả kết quả cũ thay vì tạo mới; request đồng thời chỉ một thành công; bấm lặp bị chặn; ca đêm và thiếu giờ ra được ghi đúng; thời gian do điện thoại gửi không được tin.
+**Đầu vào:** quy tắc GPS trong `DATA-RULES.md` (bán kính 150 m, chính xác ≤ 100 m, vị trí không quá 60 giây) phải được rà soát và chốt lại trước khi code. BE-6.5/BE-6.6 cần thêm quyết định ở `PLAN.md` về phạm vi nhận diện khuôn mặt và lưu trữ dữ liệu sinh trắc học.
+**Đầu ra:** endpoint chấm công; `AttendanceEvent` chỉ thêm, `AttendanceSession` tính lại được; bảng mẫu khuôn mặt và bảng kết quả xác thực.
+**Nghiệm thu:** vào/ra end-to-end không sinh bản ghi trùng; retry cùng idempotency key trả kết quả cũ thay vì tạo mới; request đồng thời chỉ một thành công; bấm lặp bị chặn; ca đêm và thiếu giờ ra được ghi đúng; thời gian do điện thoại gửi không được tin. Với khuôn mặt: không lưu ảnh thô ngoài mẫu cần thiết, mọi lần đăng ký/cập nhật/xóa đều có audit, và từ chối xác thực không chặn nhân viên gửi yêu cầu bổ sung công.
 
 ## BE-7 — Lịch sử chấm công và bảng công
 
 - [ ] **BE-7.1** Lịch sử theo khoảng ngày có phân trang; nhân viên chỉ thấy bản thân, quản lý theo phạm vi.
 - [ ] **BE-7.2** Tính giờ làm, phút muộn/về sớm, thiếu vào/ra và tổng hợp tháng theo múi giờ.
 - [ ] **BE-7.3** API bảng công cho quản lý, lọc nhân viên/chi nhánh/tháng, mở chi tiết từng ca.
+- [ ] **BE-7.4** API thống kê cá nhân theo tháng cho tab Cá Nhân của App: số ca đã làm, tổng giờ, số ngày nghỉ.
 
 **Đầu vào:** quyết định làm tròn giờ và quy đổi ngày công (mục còn mở của `PLAN.md`); công thức trong `DATA-RULES.md`.
 **Đầu ra:** endpoint lịch sử và bảng công; một công thức tính công dùng chung cho App và Web.
@@ -134,8 +139,10 @@ Không viết API khi quy tắc nghiệp vụ còn mơ hồ — ghi lại quyế
 - [ ] **BE-8.2** API gửi, xem trạng thái, duyệt/từ chối; kiểm tra người duyệt, không tự duyệt, không xử lý lặp.
 - [ ] **BE-8.3** Giữ sự kiện công gốc; lưu lý do, người thao tác, giá trị trước/sau; tính lại kết quả theo quyết định.
 - [ ] **BE-8.4** Chuyển trạng thái bằng cập nhật có điều kiện để chống duyệt đồng thời.
+- [ ] **BE-8.5** Đổi ca: API gửi, xem và duyệt yêu cầu đổi ca giữa hai nhân viên cùng chi nhánh; kiểm tra ca chồng lấn, trạng thái nhân viên nhận và ca đã chấm công. **Cần chốt phạm vi.**
+- [ ] **BE-8.6** Quy tắc thời hạn gửi đơn nghỉ (ví dụ phải gửi trước 24 giờ) áp dụng ở server, trả lỗi rõ ràng để App hiển thị.
 
-**Đầu vào:** quyết định còn mở về loại nghỉ và tác động công; quy tắc trong `DATA-RULES.md`.
+**Đầu vào:** quyết định còn mở về loại nghỉ và tác động công; quyết định về đổi ca (tự thỏa thuận hay quản lý duyệt); quy tắc trong `DATA-RULES.md`.
 **Đầu ra:** endpoint nghỉ và sửa công; cập nhật `AttendanceSession` khi duyệt, không sửa `AttendanceEvent`.
 **Nghiệm thu:** từ chối không đổi công; duyệt có lịch sử đầy đủ; duyệt đồng thời chỉ xử lý một lần; không tự duyệt; yêu cầu của OWNER khi chỉ có một OWNER giữ ở trạng thái chờ.
 
@@ -158,7 +165,9 @@ Không viết API khi quy tắc nghiệp vụ còn mơ hồ — ghi lại quyế
 - [ ] **BE-9.3** Chốt/mở lại kỳ theo quyền chủ, có audit, chặn điều chỉnh kỳ đã chốt.
 - [ ] **BE-9.4** Thử backup/restore local.
 - [ ] **BE-9.5** Review phân quyền, dữ liệu nhạy cảm và lỗi nghiệp vụ còn mở.
+- [ ] **BE-9.6** Thông báo trong app: tạo thông báo khi đơn được duyệt/từ chối, khi được giao checklist mới và khi sắp đến giờ vào ca; API danh sách, đếm chưa đọc và đánh dấu đã đọc. **Cần chốt phạm vi.**
+- [ ] **BE-9.7** Bảng lương và thu nhập theo tháng cho nhân viên. **Cần chốt phạm vi** — hiện nằm ngoài phạm vi dự án; cần công thức lương và quyền xem trước khi code.
 
-**Đầu vào:** các module nguồn (7, 8, 8A) đã có dữ liệu thật; quyết định về thời hạn lưu dữ liệu và quy trình mở lại kỳ.
+**Đầu vào:** các module nguồn (7, 8, 8A) đã có dữ liệu thật; quyết định về thời hạn lưu dữ liệu và quy trình mở lại kỳ; quyết định về phạm vi thông báo và bảng lương.
 **Đầu ra:** endpoint tổng quan, endpoint xuất CSV, luồng chốt/mở kỳ.
 **Nghiệm thu:** chỉ số tổng quan lấy từ API nguồn thật, không suy diễn; kỳ CLOSED chặn chấm công, sửa ca và phê duyệt điều chỉnh; mở lại cần OWNER và sinh audit; CSV khớp với bảng công trên màn hình.
