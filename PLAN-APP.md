@@ -8,20 +8,20 @@ Tài liệu này **chỉ quản lý phần App**. Tài liệu này không quyế
 
 Bộ 8 màn hình nhân viên do chủ dự án cung cấp ngày 2026-09-17:
 
-| # | Màn hình | Feature |
-| --- | --- | --- |
-| 1 | Trang Chủ | APP-9.5, APP-9.6 |
-| 2 | Lịch Làm Việc | APP-5.1 → APP-5.6 |
-| 3 | Chấm Công (khuôn mặt) | APP-6.1 → APP-6.9 |
-| 4 | Checklist Công Việc | APP-8A.1, APP-8A.5, APP-8A.6 |
-| 5 | Cá Nhân | APP-9.7, APP-9.8, APP-9.9 |
-| 6 | Đơn Xin Phép & Đổi Ca | APP-8.4 → APP-8.7 |
-| 7 | Chấm Công Thành Công | APP-6.7 |
-| 8 | Chấm Công Thất Bại | APP-6.7 |
+| # | Màn hình | Feature | Trạng thái |
+| --- | --- | --- | --- |
+| 1 | Trang Chủ | APP-9.5, APP-9.6 | Đã dựng giao diện |
+| 2 | Lịch Làm Việc | APP-5.1 → APP-5.6 | Chưa |
+| 3 | Chấm Công (khuôn mặt) | APP-6.1 → APP-6.9 | Chưa |
+| 4 | Checklist Công Việc | APP-8A.1, APP-8A.5, APP-8A.6 | Chưa |
+| 5 | Cá Nhân | APP-9.7, APP-9.8, APP-9.9 | Chưa |
+| 6 | Đơn Xin Phép & Đổi Ca | APP-8.4 → APP-8.7 | Chưa |
+| 7 | Chấm Công Thành Công | APP-6.7 | Chưa |
+| 8 | Chấm Công Thất Bại | APP-6.7 | Chưa |
 
 Thiết kế này **rộng hơn plan gốc**: có ba nội dung chưa từng nằm trong phạm vi dự án — chấm công bằng khuôn mặt, đổi ca và bảng lương/thu nhập — cộng với thay đổi thanh tab của nhân viên. Các feature đó đã được ghi vào plan và **đánh dấu "cần chốt phạm vi"**; không feature nào trong số đó được coi là đã chốt cho tới khi có quyết định ở `PLAN.md`.
 
-Ảnh thiết kế chưa được lưu trong repo — xem nhiệm vụ APP-1.5.
+Nguồn thiết kế đã lưu trong repo: `docs/design/trang-chu/` gồm `DESIGN.md` (token màu, chữ, khoảng cách), `code.html` (bản dựng tham chiếu) và `screen.png`.
 
 ## Trạng thái: `[x]` xong và có bằng chứng chạy thật · `[ ]` còn việc
 
@@ -56,11 +56,11 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [x] **APP-1.2** Màn hình hiển thị trạng thái API/database, có trạng thái lỗi và thử lại.
 - [x] **APP-1.3** Cấu hình API URL cho iOS Simulator (`127.0.0.1`), Android Emulator (`10.0.2.2`) và điện thoại thật (`--dart-define=API_BASE_URL`).
 - [x] **APP-1.4** Theme dùng chung; màu `ink`, `blue`, `muted` định nghĩa một nơi.
-- [ ] **APP-1.5** Lưu bộ ảnh thiết kế 8 màn hình nhân viên vào repo (ví dụ `docs/design/`) và trỏ từ plan này tới đó, để thiết kế không chỉ nằm ngoài workspace.
+- [x] **APP-1.5** Đã lưu bộ thiết kế màn nhân viên vào `docs/design/trang-chu/` (`DESIGN.md`, `code.html`, `screen.png`).
 
 **Đầu vào:** `PLAN-BE.md` BE-1.5 (`/health`) và BE-1.4 (biến môi trường); ảnh thiết kế do chủ dự án cung cấp.
-**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu), `analysis_options.yaml`, thư mục thiết kế.
-**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật; ảnh thiết kế mở được từ link trong plan.
+**Đầu ra:** `lib/main.dart`, `lib/auth/login_page.dart` (nơi định nghĩa màu), `analysis_options.yaml`, `lib/theme/app_colors.dart` (bảng màu theo thiết kế mới), `docs/design/trang-chu/`.
+**Nghiệm thu:** chạy trên iOS Simulator gọi được `/health`; `flutter analyze` sạch lỗi; đổi `API_BASE_URL` bằng `--dart-define` hoạt động trên máy thật; thiết kế mở được từ link trong plan.
 
 ## APP-3 — Đăng nhập và phiên
 
@@ -98,9 +98,9 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [x] **APP-4A.7** Module chưa có API hiển thị trạng thái chưa sẵn sàng, không dùng số liệu giả.
 - [x] **APP-4A.8** Chống race bằng biến `generation` cho mọi thao tác bất đồng bộ.
 - [ ] **APP-4A.9** Đăng ký deep link tới module quản lý (chưa làm; hiện kiểm tra vai trò bằng callback).
-- [ ] **APP-4A.10** Cập nhật thanh điều hướng nhân viên theo thiết kế 2026-09-17: **Trang Chủ · Lịch · Chấm Công (nút giữa) · Checklist · Cá Nhân**; bỏ tab **Yêu cầu** và mở đơn từ từ Trang Chủ/Cá Nhân. **Cần chốt phạm vi** trước khi đổi, vì thiết kế này thay đổi mục APP-4A.3 đã hoàn thành.
+- [x] **APP-4A.10** Thanh điều hướng nhân viên theo thiết kế 2026-09-17: **Trang Chủ · Lịch · Chụp ảnh (nút giữa) · Checklist · Cá Nhân**. Tab **Yêu cầu** đã bỏ; lịch sử công và đơn từ mở từ tab Cá Nhân (APP-8.7). Giữ khoá `tab-0`…`tab-4` nên test cũ vẫn dùng được.
 
-**Đầu vào:** `PLAN-BE.md` BE-4A.1, BE-4A.2; ma trận quyền trong `docs/PRODUCT.md`; quyết định ở `PLAN.md` về thanh tab mới.
+**Đầu vào:** `PLAN-BE.md` BE-4A.1, BE-4A.2; ma trận quyền trong `docs/PRODUCT.md`; thiết kế trong `docs/design/trang-chu/`.
 **Đầu ra:** `lib/workspace/session_gate.dart`, `lib/workspace/workspace_shell.dart`, `test/workspace_test.dart`, `integration_test/workspace_flow_test.dart`.
 **Nghiệm thu:** ba vai trò vào đúng shell; một/nhiều/không có membership xử lý đúng; dữ liệu công ty cũ bị xóa khi đổi đơn vị; route quản lý không mở được từ callback của nhân viên; 5 tab dùng được ở màn 320px và chữ lớn. Nếu đổi thanh tab: đơn từ vẫn tới được từ ít nhất một lối vào, và test workspace hiện có được cập nhật. **Bằng chứng 2026-09-17:** `flutter analyze` sạch, 21 widget test đạt, `workspace_flow_test.dart` và `management_flow_test.dart` đạt trên iPhone 17 Pro/iOS 26.
 
@@ -176,7 +176,7 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 - [ ] **APP-9.2** Hoàn thiện trạng thái tải/rỗng/lỗi/mất phiên và điều hướng trên cả hai shell.
 - [ ] **APP-9.3** Nghiệm thu trên iOS Simulator; ghi riêng GPS và iPhone vật lý chưa xác minh.
 - [ ] **APP-9.4** Review lại toàn bộ: màn 320px, chữ lớn, xoay màn hình, mất mạng giữa luồng.
-- [ ] **APP-9.5** **Trang Chủ** nhân viên: lời chào theo tên, ngày giờ hiện tại, thẻ ca hiện tại kèm trạng thái (đang làm việc / chưa vào), danh sách công việc hôm nay, và tiến độ hoàn thành.
+- [x] **APP-9.5** **Trang Chủ** nhân viên: danh tính theo thiết kế, ngày giờ, băng ca có trạng thái suy ra từ giờ thật, danh sách công việc hôm nay kèm bộ đếm tiến độ và đánh dấu được, dải GPS. Xem ghi chú triển khai bên dưới.
 - [ ] **APP-9.6** Chuông thông báo trên Trang Chủ: số chưa đọc, danh sách thông báo, đánh dấu đã đọc. **Cần chốt phạm vi.**
 - [ ] **APP-9.7** Tab **Cá Nhân** phần thông tin: ảnh, tên, chức danh, mã nhân viên, vai trò, trạng thái; thống kê tháng gồm số ca và tổng giờ.
 - [ ] **APP-9.8** Tab **Cá Nhân** các lối vào: đăng ký khuôn mặt, cài đặt nhắc nhở, đổi đơn vị làm việc, đổi mật khẩu, đăng xuất và số phiên bản app. *Danh sách mục cần chốt lại với chủ dự án vì ảnh thiết kế có chữ nhỏ.*
@@ -185,3 +185,20 @@ Mỗi feature App chỉ bắt đầu khi đầu vào tương ứng đã sẵn s�
 **Đầu vào:** tất cả module nguồn (5, 6, 7, 8, 8A) đã có API thật; `PLAN-BE.md` BE-7.4 (thống kê cá nhân), BE-9.6 (thông báo), BE-9.7 (bảng lương), BE-3.7 (đổi mật khẩu), BE-4.7 (chức danh).
 **Đầu ra:** Trang Chủ thật thay `UnavailableCard` hiện tại; tab Cá Nhân đầy đủ; báo cáo nghiệm thu theo từng shell; cập nhật `App/README.md`.
 **Nghiệm thu:** chủ tạo nhân viên → phân ca → nhân viên chấm công → gửi yêu cầu → quản lý duyệt → xem bảng công, toàn bộ trên app thật, không dùng dữ liệu giả; Trang Chủ không hiển thị số liệu nào khi module nguồn chưa có API; thống kê tháng khớp dữ liệu bảng công cùng kỳ; mọi lối vào trong Cá Nhân đều có tác dụng thật, không có nút chết. Android vẫn hoãn.
+
+### Ghi chú triển khai — Trang Chủ, 2026-09-17
+
+Đã code xong giao diện Trang Chủ (`lib/home/home_page.dart`, `lib/home/home_data.dart`, `lib/theme/app_colors.dart`). Vì BE chưa có API cho ca làm, checklist và GPS, phần dữ liệu được tách làm hai loại rõ ràng:
+
+| Phần trên màn hình | Nguồn | Ghi chú |
+| --- | --- | --- |
+| Tên nhân viên, công ty, chi nhánh | **API thật** (`/auth/me` + `/organizations/:id/profile`) | Không có ảnh đại diện trong schema nên hiển thị chữ cái đầu |
+| Ca làm việc hôm nay | Dữ liệu mẫu (chờ BE-5) | Trạng thái ca suy ra từ giờ thật, không gán cứng |
+| Công việc hôm nay | Dữ liệu mẫu (chờ BE-8A) | Bộ đếm chạy đúng theo thao tác đánh dấu |
+| Định vị GPS | Dữ liệu mẫu (chờ BE-6) | **Chưa xin quyền vị trí trên thiết bị** — chưa thêm dependency `geolocator` |
+
+Trong lúc còn dữ liệu mẫu, màn hình hiển thị nhãn **"DỮ LIỆU MẪU"** ở đầu trang, đúng nguyên tắc không hiển thị số liệu giả như thật. Khi nối API: thay `HomeData.sample` bằng lời gọi API và đặt `HomeData.isDemo = false` để nhãn tự mất.
+
+**Chưa làm ở màn này:** nút chuông thông báo mới chỉ hiển thị, chưa mở được (chờ BE-9.6); chưa có deep link; đồng hồ trên màn cập nhật theo lần vẽ chứ chưa tự nhích mỗi phút (tránh `Timer.periodic` làm widget test không kết thúc).
+
+**Bằng chứng:** `flutter analyze` sạch lỗi; 22 widget test đạt, gồm test mới "Home shows demo notice and checklist counter follows ticks" và test cũ "All five tabs stay usable at 320px and large text" vẫn đạt sau khi đổi thanh tab.

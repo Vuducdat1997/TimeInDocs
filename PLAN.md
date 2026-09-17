@@ -89,6 +89,7 @@ Thứ tự công việc tiếp theo:
 
 | Ngày | Thay đổi | Kiểm tra / bước tiếp theo |
 | --- | --- | --- |
+| 2026-09-17 | Dựng màn **Trang Chủ** nhân viên theo thiết kế: danh tính, băng ca, công việc hôm nay, dải GPS; đổi thanh tab nhân viên sang Trang Chủ · Lịch · Chụp ảnh · Checklist · Cá Nhân. Lưu thiết kế vào `docs/design/trang-chu/` | `flutter analyze` sạch, 22 widget test đạt. Danh tính lấy API thật; ca/công việc/GPS còn là dữ liệu mẫu có nhãn, chờ BE-5/BE-8A/BE-6. Chưa chụp được màn trên máy ảo vì cần đăng nhập |
 | 2026-09-17 | Bổ sung feature từ thiết kế 8 màn hình nhân viên: lịch tháng, chấm công bằng khuôn mặt, màn kết quả chấm công, checklist theo ca, form đơn xin phép, đổi ca, trang chủ có thông báo, tab Cá Nhân có thống kê tháng, bảng lương | Ba nội dung vượt phạm vi (khuôn mặt, bảng lương, đổi ca) được ghi kèm nhãn **cần chốt phạm vi**; đã cập nhật bảng Hợp đồng liên phần và mục Quyết định còn mở |
 | 2026-09-17 | Tách kế hoạch thành trang điều hướng và ba plan riêng `PLAN-BE.md`, `PLAN-APP.md`, `PLAN-WEB.md`; mỗi feature có Đầu vào / Đầu ra / Nghiệm thu | Bổ sung `AGENTS.md` cho App và BE. Tiếp theo phần 5 |
 | 2026-09-17 | Tách mã nguồn thành 4 repo: `TimeInApp`, `TimeInBE`, `TimeInDocs`, `WebAdmin`; chuyển `PLAN.md` và `README.md` vào `docs/`, đổi link chéo sang URL đầy đủ | Đã kiểm tra không đẩy `.env`, `node_modules` hay thư mục build; repo gốc rỗng đã xoá |
@@ -105,7 +106,7 @@ Phải chốt trước khi bắt đầu feature tương ứng; ghi lại quyết
 - **Phần 5–6:** rà soát và chốt các mặc định trong `BE/docs/DATA-RULES.md` về giờ nghỉ, đi muộn, cửa sổ vào/ra và GPS.
 - **Phần 5:** quy tắc sửa/hủy ca đã có công.
 - **Phần 6 — chấm công bằng khuôn mặt (mới, từ thiết kế 2026-09-17):** có đưa vào phạm vi không; nếu có thì dùng thư viện/thuật toán nào, chạy trên thiết bị hay gửi lên server, lưu mẫu khuôn mặt ở đâu, thời hạn lưu và quyền xóa. Dữ liệu sinh trắc học cần quyết định riêng trước khi viết code.
-- **Phần 6 — thanh tab nhân viên (mới):** thiết kế đổi thành **Trang Chủ · Lịch · Chấm Công (nút giữa) · Checklist · Cá Nhân** và bỏ tab **Yêu cầu**. Cần chốt lối vào đơn từ (Trang Chủ, Cá Nhân hay cả hai) và việc đổi tab có phá vỡ APP-4A.3 hay không.
+- **Phần 6 — thanh tab nhân viên:** đã chốt và triển khai 2026-09-17 theo thiết kế (Trang Chủ · Lịch · Chụp ảnh · Checklist · Cá Nhân). Đơn từ mở từ tab Cá Nhân theo `APP-8.7`; nếu muốn thêm lối vào ngay Trang Chủ thì bổ sung sau, không phá cấu trúc.
 - **Phần 8 — đổi ca (mới):** cho phép nhân viên tự thỏa thuận đổi ca với nhau hay chỉ gửi đề xuất để quản lý duyệt; ca đã chấm công có được đổi không.
 - **Phần 9 — bảng lương và thu nhập (mới):** hiện nằm ngoài phạm vi. Nếu đưa vào thì cần chốt công thức lương, quyền xem và có gắn với chốt kỳ công không.
 - **Phần 9 — thông báo trong app (mới):** nguồn thông báo (đổi ca, duyệt đơn, nhắc vào ca), có cần push qua dịch vụ ngoài hay chỉ hiển thị trong app.
